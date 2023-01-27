@@ -7,6 +7,8 @@ import {
   TextInput,
 } from '@ignite-ui/react'
 import { z } from 'zod'
+import { AxiosError } from 'axios'
+import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
@@ -87,6 +89,7 @@ export default function TimeIntervals() {
     },
   })
 
+  const router = useRouter()
   const weekDays = getWeekDays()
 
   const intervals = watch('intervals')
@@ -96,13 +99,22 @@ export default function TimeIntervals() {
   })
 
   async function handleSetTimeIntervals(data: any) {
-    const { intervals } = data as timeIntervalsFormOutput
+    try {
+      const { intervals } = data as timeIntervalsFormOutput
 
-    const { data: response } = await api.post('/users/time-intervals', {
-      intervals,
-    })
+      await api.post('/users/time-intervals', {
+        intervals,
+      })
 
-    console.log(response)
+      await router.push('/register/update-profile')
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data?.message) {
+        alert(error.response.data.message)
+        return
+      }
+
+      console.error(error)
+    }
   }
 
   return (
