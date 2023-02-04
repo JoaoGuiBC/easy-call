@@ -43,7 +43,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const username = String(params?.username)
 
-  /* const user = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       username,
     },
@@ -53,14 +53,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return {
       notFound: true,
     }
-  } */
+  }
 
   return {
     props: {
       user: {
         name: username,
-        bio: 'user.bio',
-        avatarUrl: 'user.avatar_url',
+        bio: user.bio,
+        avatarUrl: user.avatar_url,
       },
     },
     revalidate: 60 * 60 * 24, // 1 day
