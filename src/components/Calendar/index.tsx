@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+import { useState } from 'react'
 import { CaretLeft, CaretRight } from 'phosphor-react'
 
 import { getWeekDays } from '../../utils/get-week-days'
@@ -12,20 +14,39 @@ import {
 } from './styles'
 
 export function Calendar() {
+  const [currentDate, setCurrentDate] = useState(() => {
+    return dayjs().set('date', 1)
+  })
+
+  function handlePreviousMonth() {
+    const previousMonthDate = currentDate.subtract(1, 'month')
+
+    setCurrentDate(previousMonthDate)
+  }
+
+  function handleNextMonth() {
+    const nextMonthDate = currentDate.add(1, 'month')
+
+    setCurrentDate(nextMonthDate)
+  }
+
   const shortWeekDays = getWeekDays({ short: true })
+
+  const currentMonth = currentDate.format('MMMM')
+  const currentYear = currentDate.format('YYYY')
 
   return (
     <CalendarContainer>
       <CalendarHeader>
         <CalendarTitle>
-          Janeiro <span>2023</span>
+          {currentMonth} <span>{currentYear}</span>
         </CalendarTitle>
 
         <CalendarActions>
-          <button>
+          <button onClick={handlePreviousMonth} title="Previous month">
             <CaretLeft />
           </button>
-          <button>
+          <button onClick={handleNextMonth} title="Next month">
             <CaretRight />
           </button>
         </CalendarActions>
@@ -41,18 +62,23 @@ export function Calendar() {
         </thead>
         <tbody>
           <tr>
+            <td></td>
+            <td></td>
+            <td></td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarDay disabled>1</CalendarDay>
             </td>
             <td>
-              <CalendarDay>2</CalendarDay>
+              <CalendarDay disabled>2</CalendarDay>
             </td>
             <td>
               <CalendarDay>3</CalendarDay>
             </td>
             <td>
-              <CalendarDay disabled>4</CalendarDay>
+              <CalendarDay>4</CalendarDay>
             </td>
+          </tr>
+          <tr>
             <td>
               <CalendarDay disabled>5</CalendarDay>
             </td>
@@ -61,6 +87,18 @@ export function Calendar() {
             </td>
             <td>
               <CalendarDay>7</CalendarDay>
+            </td>
+            <td>
+              <CalendarDay>8</CalendarDay>
+            </td>
+            <td>
+              <CalendarDay>9</CalendarDay>
+            </td>
+            <td>
+              <CalendarDay>10</CalendarDay>
+            </td>
+            <td>
+              <CalendarDay>11</CalendarDay>
             </td>
           </tr>
         </tbody>
