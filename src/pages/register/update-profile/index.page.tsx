@@ -16,7 +16,7 @@ import type { GetServerSideProps } from 'next'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { unstable_getServerSession } from 'next-auth'
 
-import { api } from '../../../lib/axios'
+import { api } from '@lib/axios'
 import { buildNextAuthOprions } from '../../api/auth/[...nextauth].api'
 
 import { Container, Header } from '../styles'

@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import { CaretLeft, CaretRight } from 'phosphor-react'
 
-import { getWeekDays } from '../../utils/get-week-days'
+import { getWeekDays } from '@utils/get-week-days'
 
 import {
   CalendarActions,

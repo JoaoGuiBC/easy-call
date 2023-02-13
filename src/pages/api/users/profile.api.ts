@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { unstable_getServerSession } from 'next-auth'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { prisma } from '../../../lib/prisma'
+import { prisma } from '@lib/prisma'
 import { buildNextAuthOprions } from '../auth/[...nextauth].api'
 
 const updateProfileBodySchema = z.object({
