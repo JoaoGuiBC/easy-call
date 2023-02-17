@@ -36,6 +36,8 @@ export default async function handle(
     )
   })
 
+  const formattedDate = `${String(month).padStart(2, '0')}-${year}`
+
   const blockedDatesRaw: Array<{ date: number }> = await prisma.$queryRaw`
     SELECT 
       EXTRACT(DAY FROM S.date) as date,
@@ -46,8 +48,8 @@ export default async function handle(
     LEFT JOIN user_time_intervals UTI
       ON UTI.week_day = EXTRACT(DOW FROM S.date)
 
-    WHERE S.user_id = 'ab6008b0-67ac-4d70-a04f-4f21981d97b8'
-      AND to_char(S.date, 'MM-YYYY') = '02-2023'
+    WHERE S.user_id = ${user.id}
+      AND to_char(S.date, 'MM-YYYY') = ${formattedDate}
 
     GROUP BY EXTRACT(DAY FROM S.date),
       ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60)
