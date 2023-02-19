@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse, NextPageContext } from 'next'
 
 import { PrismaAdapter } from '@lib/auth/prisma-adapter'
 
-export function buildNextAuthOprions(
+export function buildNextAuthOptions(
   req: NextApiRequest | NextPageContext['req'],
   res: NextApiResponse | NextPageContext['res']
 ): NextAuthOptions {
@@ -57,5 +57,5 @@ export function buildNextAuthOprions(
 }
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  return await NextAuth(req, res, buildNextAuthOprions(req, res))
+  return await NextAuth(req, res, buildNextAuthOptions(req, res))
 }

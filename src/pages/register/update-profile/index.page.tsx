@@ -8,6 +8,7 @@ import {
 } from '@ignite-ui/react'
 import { z } from 'zod'
 import { AxiosError } from 'axios'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { ArrowRight } from 'phosphor-react'
@@ -17,7 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { unstable_getServerSession } from 'next-auth'
 
 import { api } from '@lib/axios'
-import { buildNextAuthOprions } from '../../api/auth/[...nextauth].api'
+import { buildNextAuthOptions } from '../../api/auth/[...nextauth].api'
 
 import { Container, Header } from '../styles'
 import { ProfileBox, FormAnnotation } from './styles'
@@ -56,40 +57,44 @@ export default function UpdateProfile() {
   }
 
   return (
-    <Container>
-      <Header>
-        <Heading as="strong">Bem-vindo ao Easy Call</Heading>
-        <Text>
-          Precisamos de algumas informações para criar seu perfil! Ah, você pode
-          editar essas informações depois.
-        </Text>
+    <>
+      <NextSeo title="Atualize seu perfil | Easy Call" noindex />
 
-        <MultiStep size={4} currentStep={4} />
-      </Header>
+      <Container>
+        <Header>
+          <Heading as="strong">Bem-vindo ao Easy Call</Heading>
+          <Text>
+            Precisamos de algumas informações para criar seu perfil! Ah, você
+            pode editar essas informações depois.
+          </Text>
 
-      <ProfileBox as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
-        <label>
-          <Text>Foto de perfil</Text>
-          <Avatar
-            src={session.data?.user.avatar_url}
-            alt={`Image de avatar de ${session.data?.user.name}`}
-          />
-        </label>
+          <MultiStep size={4} currentStep={4} />
+        </Header>
 
-        <label>
-          <Text size="sm">Sobre você</Text>
-          <TextArea {...register('bio')} />
-          <FormAnnotation size="sm">
-            Fale um pouco sobre você. Isto será exibido em sua página pessoal.
-          </FormAnnotation>
-        </label>
+        <ProfileBox as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
+          <label>
+            <Text>Foto de perfil</Text>
+            <Avatar
+              src={session.data?.user.avatar_url}
+              alt={`Image de avatar de ${session.data?.user.name}`}
+            />
+          </label>
 
-        <Button type="submit" disabled={isSubmitting}>
-          Finalizar
-          <ArrowRight />
-        </Button>
-      </ProfileBox>
-    </Container>
+          <label>
+            <Text size="sm">Sobre você</Text>
+            <TextArea {...register('bio')} />
+            <FormAnnotation size="sm">
+              Fale um pouco sobre você. Isto será exibido em sua página pessoal.
+            </FormAnnotation>
+          </label>
+
+          <Button type="submit" disabled={isSubmitting}>
+            Finalizar
+            <ArrowRight />
+          </Button>
+        </ProfileBox>
+      </Container>
+    </>
   )
 }
 
@@ -97,7 +102,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await unstable_getServerSession(
     req,
     res,
-    buildNextAuthOprions(req, res)
+    buildNextAuthOptions(req, res)
   )
 
   return { props: { session } }
