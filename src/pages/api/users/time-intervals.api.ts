@@ -3,7 +3,7 @@ import { unstable_getServerSession } from 'next-auth'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { prisma } from '@lib/prisma'
-import { buildNextAuthOprions } from '../auth/[...nextauth].api'
+import { buildNextAuthOptions } from '../auth/[...nextauth].api'
 
 const timeIntervalsBodySchema = z.object({
   intervals: z.array(
@@ -26,7 +26,7 @@ export default async function handler(
   const session = await unstable_getServerSession(
     req,
     res,
-    buildNextAuthOprions(req, res)
+    buildNextAuthOptions(req, res)
   )
 
   if (!session) {
