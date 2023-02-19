@@ -5,7 +5,10 @@ import { prisma } from './prisma'
 
 export async function getGoogleOAuthToken(userId: string) {
   const account = await prisma.account.findFirstOrThrow({
-    where: { provider: 'google', user_id: userId },
+    where: {
+      provider: 'google',
+      user_id: userId,
+    },
   })
 
   const auth = new google.auth.OAuth2(
@@ -42,11 +45,11 @@ export async function getGoogleOAuthToken(userId: string) {
       },
       data: {
         access_token,
+        expires_at: expiry_date ? Math.floor(expiry_date / 1000) : null,
         id_token,
         refresh_token,
         scope,
         token_type,
-        expires_at: expiry_date ? Math.floor(expiry_date / 1000) : null,
       },
     })
 
@@ -55,7 +58,7 @@ export async function getGoogleOAuthToken(userId: string) {
       refresh_token,
       expiry_date,
     })
-
-    return auth
   }
+
+  return auth
 }
